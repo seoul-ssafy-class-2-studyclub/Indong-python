@@ -22,7 +22,7 @@ result_list = []
 try:
     for number in range(case_size):
         P, Q, R, S, W = map(int, input().split())
-        if 1 <= P and Q and R and S and W <= 10000:
+        if list(filter(lambda x: (x < 1 or x > 10000), [P, Q, R, S, W])) == []:
             result_list += [comparison_bill(P, Q, R, S, W)]
         else:
             raise ValueError
