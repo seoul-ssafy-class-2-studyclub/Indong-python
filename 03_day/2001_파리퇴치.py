@@ -1,8 +1,11 @@
 def dead_fly(mat, N, M):
     total_list = []
+    # 전체 열 이동
     for k in range(N - M + 1):
+        # 전체 행 이동
         for i in range(N - M + 1):
             total = 0
+            # 파리채 크기 설정
             for j in range(M):
                 total += sum(mat[k + j][i:i + M])
             total_list += [total]
