@@ -10,7 +10,7 @@ try:
                 # word[:2](ka)와 word[2:4](ka)가 같다면
                 if word[:i+1] == word[i+1:i+(i+2)]:
                     count_set = set()
-                    # 불필요한 단어(예를 들어 SAMSUMG의 SA)가 set에 들어가는 걸 방지하기 위해 범위의 끝에서 전체 범위를 단어 수로 나눈 나머지를 빼줌.
+                    # 불필요한 단어(예를 들어 SAMSUMG의 SA)가 set에 들어가는 걸 방지하기 위해 마지막 숫자를 '전체 범위를 단어 수로 나눈 나머지'를 빼줌.
                     # 간격을 지정함으로써 단어 단위로 set에 들어갈 수 있게 한다.
                     # 'ka' 'ka' 'ok' 'ak' 'ao'가 들어감
                     for j in range(0, len(word) - (len(word) % (i + 1)), i+1):
