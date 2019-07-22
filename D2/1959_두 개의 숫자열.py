@@ -10,8 +10,7 @@ try:
                 list_N, list_M = list_M, list_N
                 N, M = M, N
             for j in range(M - N + 1):
-                list_A = list_M[j:j+N]
-                result_list += [sum([list_N[i] * list_A[i] for i in range(N)])]
+                result_list += [sum([list_N[i] * list_M[i+j] for i in range(N)])]
                 result = max(result_list)
             print(f'#{case + 1} {result}')    
         else:
