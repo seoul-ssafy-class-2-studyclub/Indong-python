@@ -23,5 +23,5 @@ for case in range(1, case_size + 1):
     for i in range(len(score_list)):
         if score_list[i][0] == K - 1:
             grade_index = int(i // interval)
-            print(f'{case} {grade[grade_index]}')
+            print(f'#{case} {grade[grade_index]}')
             
