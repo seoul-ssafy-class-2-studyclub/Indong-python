@@ -1,5 +1,5 @@
 def calc_total(middle, final, assignment):
-    result = int((middle * 3.5) + (final * 4.5) + (assignment * 2))
+    result = (middle * 0.35) + (final * 0.45) + (assignment * 0.2)
     return result
 
 grade = ['A+', 'A0', 'A-', 'B+', 'B0', 'B-', 'C+', 'C0', 'C-', 'D0']
