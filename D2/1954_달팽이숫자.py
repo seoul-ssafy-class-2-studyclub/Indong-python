@@ -28,18 +28,11 @@ def snail(n, n_list, board):
         return snail_second(n - 1, n_list, board)
 
 case_size = int(input())
-try:
-    for case in range(case_size):
-        length = int(input())
-        if (1 <= length <= 10):
-            number_list = list(range(1, length ** 2 + 1))
-            snail_board = [[] for i in range(length)]
-            result_matrix = snail(length, number_list, snail_board)
-            print(f'#{case + 1}')
-            for row in result_matrix:
-                print(' '.join(map(str, row)))          
-        else:
-            raise ValueError
-
-except ValueError:
-    print('올바른 범위의 수를 입력해주세요.')
+for case in range(case_size):
+    length = int(input())
+    number_list = list(range(1, length ** 2 + 1))
+    snail_board = [[] for i in range(length)]
+    result_matrix = snail(length, number_list, snail_board)
+    print(f'#{case + 1}')
+    for row in result_matrix:
+        print(' '.join(map(str, row)))          
