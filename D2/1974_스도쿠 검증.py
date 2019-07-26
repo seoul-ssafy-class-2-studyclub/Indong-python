@@ -29,7 +29,6 @@ for case in range(1, case_size + 1):
             board += [sudoku_list]
         else:
             switch = 0
-            break
     if switch == 1:
         for j in range(9):
             vertical_list = [board[k][j] for k in range(9)]
@@ -48,10 +47,8 @@ for case in range(1, case_size + 1):
                     continue
                 else:
                     switch = 0
+                    break
     if switch == 1:
         print(f'#{case} 1')
     else:
         print(f'#{case} 0')
-
-
-    
