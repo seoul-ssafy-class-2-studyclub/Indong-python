@@ -24,24 +24,19 @@ def manacher_palindrome(string):
 
 for case in range(1, 11):
     word_list = []
-    length = int(input())
+    number = int(input())
     result = 0
-    for i in range(8):
+    for i in range(100):
         row = input()
-        if length % 2:
-            filtering = list(filter(lambda x: x >= length and x % 2, manacher_palindrome(row)))
-        else:
-            filtering = list(filter(lambda x: x >= length and (not x % 2), manacher_palindrome(row)))
-        result += len(filtering)
         word_list.append(row)
-    for j in range(8):
+        max_pal = max(manacher_palindrome(row))
+        if result < max_pal:
+            result = max_pal
+    for j in range(100):
         column = ''
-        for k in range(8):
+        for k in range(100):
             column += word_list[k][j]
-        if length % 2:
-            filtering = list(filter(lambda x: x >= length and x % 2, manacher_palindrome(column)))
-        else:
-            filtering = list(filter(lambda x: x >= length and (not x % 2), manacher_palindrome(column)))
-        result += len(filtering)
+        max_pal = max(manacher_palindrome(column))
+        if result < max_pal:
+            result = max_pal
     print(f'#{case} {result}')
-

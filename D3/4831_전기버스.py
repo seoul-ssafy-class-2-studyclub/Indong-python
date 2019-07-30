@@ -1,9 +1,8 @@
-import math
 case_size = int(input())
 for case in range(1, case_size + 1):
     bus = 0
     count = 0
-    K, N, M = list(map(int, input().split()))
+    K, N, M = map(int, input().split())
     list_charge = list(map(int, input().split()))
     move = K
     while bus < N:

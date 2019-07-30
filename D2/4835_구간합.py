@@ -1,32 +1,25 @@
-def prefix_sum(int_num, interval_num, numbers):
-    total_list = []
-    i = 0
-    while i + interval_num <= int_num:
-        sum_num = sum(numbers[i:i + interval_num])
-        total_list += [sum_num]
-        i += 1
-    return total_list
+def calc_range(x, length, arr):
+    sum_array = [0]
+    for i in range(x):
+        if i == 0:
+            sum_array.append(arr[i])
+        else:
+            sum_array.append(sum_array[-1] + arr[i])
 
+    max_sum = 0
+    min_sum = sum_array[length] - sum_array[0]
+    for i in range(x - length + 1):
+        prefix_sum = sum_array[i+length] - sum_array[i]
+        if prefix_sum > max_sum:
+            max_sum = prefix_sum
+        elif prefix_sum < min_sum:
+            min_sum = prefix_sum
+
+    return max_sum - min_sum
 
 case_size = int(input())
-result_list = []
-try:
-    if 1 <= case_size <= 50:
-        for j in range(case_size):
-            input_int, input_interval = map(int, input().split())
-            input_numbers = list(map(int, input().split()))
-            if (10 <= input_int <= 100) and (2 <= input_interval <= input_int) and (max(set(input_numbers).union(set(range(1, 10001)))) <= 10000):
-                prefix_list = prefix_sum(input_int, input_interval, input_numbers)
-                result = max(prefix_list) - min(prefix_list)
-                result_list += [result]
-            else:
-                raise ValueError
-    else:
-        raise ValueError
-
-    for key, value in enumerate(result_list):
-        print("#{0} {1}".format(key + 1, value))
-
-except ValueError:
-    print("올바른 수를 입력하세요")
-    
+for case in range(1, case_size + 1):
+    N, M = map(int, input().split())
+    A = list(map(int, input().split()))
+    result = calc_range(N, M, A)
+    print(f'#{case} {result}')
