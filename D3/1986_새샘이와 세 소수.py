@@ -12,7 +12,7 @@ primes_count = len(primes)
 case_size = int(input())
 for case in range(1, case_size + 1):
     N = int(input())
-    idx = 0
+    idx = len(primes) - 1
     count = 0
     for i in range(primes_count):
         if primes[i] > N:
@@ -31,5 +31,4 @@ for case in range(1, case_size + 1):
                 if prime_sum == N:
                     count += 1
                     break
-
     print(f'#{case} {count}')
