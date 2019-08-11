@@ -1,29 +1,27 @@
-def dfs(node, adj, path, vis, cnt=1):
+a = [2, 2, 2, 1]
+b = [1, 2, 3, 4]
+def bi_recover(a):
+    result = ''
+    if abs(a[1] - a[2]) >= 2 or (not (a[1] or a[2]) and (a[0] and a[3])):
+        return 'impossible'
+    if a[1] > a[2]:
+        result += '01' * a[1]
+        result = '0' * a[0] + result + '1' * a[3]
+    elif a[1] < a[2]:
+        result += '10' * a[2]
+        result = '1' * a[3] + result + '0' * a[0]
+    else:
+        if not (a[1] or a[2]):
+            if a[0]:
+                result = '0' * (a[1] + 1)
+            else:
+                result = '1' * (a[3] + 1)
+        else:
+            result = '01' * a[1] + '1' * a[3] + '0' * (a[0] + 1)
 
-    vis[node] -= 1
+    return result
 
-    path[cnt] = path[cnt-1] + [node]
-
-    for i in range(0, len(adj[node])):
-        if vis[adj[node][i]]:
-            dfs(adj[node][i], adj, path, vis, cnt + 1)
-
-def findpath(adj, vis, n):
-    path = [[] for i in range(sum(vis) + 1)]
-    is_possible = False
-
-    for i in range(1, n + 1):
-        visit = vis[:]
-        if visit[i]:
-            dfs(i, adj, path, visit)
-        if len(path[-1]) == sum(vis):
-            is_possible = True
-            break
-    print(is_possible)
-    return path
-
-
-adj = [[], [1, 2], [3, 4], [1, 2], [3, 4]]
-vis = [0, 1, 2, 3, 4]
-
-print(findpath(adj, vis, 4))
+result_list = []
+for case in range(1, int(input()) + 1):
+    count = list(map(int, input().split()))
+    print(f'#{case} {bi_recover(count)}')
