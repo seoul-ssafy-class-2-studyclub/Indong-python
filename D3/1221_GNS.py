@@ -17,9 +17,6 @@ def alien_qsort(arr):
                 right += [x]
         return alien_qsort(left) + equal + alien_qsort(right)
 
-import sys
-sys.stdin = open("GNS_test_input.txt", "r")
-
 case_size = int(input())
 for case in range(1, case_size + 1):
     N = input()

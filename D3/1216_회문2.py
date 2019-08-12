@@ -1,4 +1,3 @@
-# manacher algorithm을 이용한 풀이
 def manacher_palindrome(string):
     string = '#' + '#'.join(string) + '#'
     N = len(string)
