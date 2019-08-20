@@ -1,57 +1,43 @@
-import copy
+# word = '()()((()))'
+# word2 = '((()((((()()((()())((())))))'
+# def gwalho(word):
+#     left = '('
+#     right = ')'
+#     stack = []
 
-for tc in range(1, 11):
+#     for i in word:
+#         if i == left:
+#             stack.append(i)
+#         elif i == right:
+#             if stack.pop() != left:
+#                 return False
+#     if stack:
+#         return False
+#     return True
 
-    V, E = map(int, input().split())
+# print(gwalho(word2))
+# graph = [1, 2, 1, 3, 2, 4, 2, 5, 4, 6, 5, 6, 6, 7, 3, 7]
+# adj_list = [[] for i in range(8)]
+# adj_matrix = [[0] * 8 for i in range(8)]
+# for i in range(0, len(graph), 2):
+#     adj_list[graph[i]].append(graph[i+1])
+#     adj_list[graph[i+1]].append(graph[i])
+#     adj_matrix[graph[i]][graph[i+1]] = 1
+#     adj_matrix[graph[i+1]]
 
-    order = []
-    inputs = list(input().split())
+adj = [[], [2, 3], [1, 4, 5], [1, 7], [2, 6], [2, 6], [4, 5, 7], [3, 6]]
+vis = [False] * 8
+stack = []
+stack.append(1)
+path = []
 
-
-    for i in range(E):
-        temp = []
-        temp.append(inputs.pop(0))
-        temp.append(inputs.pop(0))
-        order.append(temp)
-
-    result = [order[0][0], order[0][1]]
-    last_order = []
-    
-    for i in range(1, E):
-        # print(order[i][0], order[i][1])
-        if order[i][0] in result and order[i][1] in result:
-            pass
-        elif order[i][0] in result and order[i][1] not in result:
-            k = result.index(order[i][0])
-            result.insert(k+1, order[i][1])
-            result[k+1] = order[i][1]
-        elif order[i][0] not in result and order[i][1] in result:
-            k = result.index(order[i][1])
-            result.insert(k, order[i][0])
-        else:
-            last_order.append([order[i][0], order[i][1]])
-
-    while len(last_order) > 0:
-        temp2 = len(last_order)
-        order = copy.deepcopy(last_order)
-        last_order = []
-        for i in range(len(order)):
-            if order[i][0] in result and order[i][1] in result:
-                pass
-            elif order[i][0] in result and order[i][1] not in result:
-                k = result.index(order[i][0])
-                result.insert(k+1, order[i][1])
-                result[k+1] = order[i][1]
-            elif order[i][0] not in result and order[i][1] in result:
-                k = result.index(order[i][1])
-                result.insert(k, order[i][0])
-            else:
-                last_order.append([order[i][0], order[i][1]])
-
-        temp = len(last_order)                
-        if temp == temp2 and temp != 0:
-            result.append(last_order[0][0])
-            result.append(last_order[0][1])
+while stack:
+    node = stack.pop()
+    if not vis[node]:
+        path += [node]
+        vis[node] = True
+        # for i in range(len(a)):
             
-    reresult = ' '.join(result)
-    print(f'#{tc} {reresult}')
+        stack.extend(adj[node])
+
+print('-'.join(map(str, path)))
