@@ -7,16 +7,14 @@ def air(queue):
     queue = queue[:]
     board[0][0] = -1
     while queue:
-        x = queue.pop(0)
-        y = queue.pop(0)
+        x, y = queue.pop(0)
         for i in range(4):
             xi = x + dx[i]
             yi = y + dy[i]
             if 0 <= xi < N and 0 <= yi < M:
                 if not board[yi][xi]:
                     board[yi][xi] = -1 
-                    queue.append(xi)
-                    queue.append(yi)
+                    queue.append((xi, yi))
                 elif board[yi][xi] == 1:
                     board[yi][xi] = 2
     return queue
@@ -37,8 +35,7 @@ while True:
             if board[i][j] == 2:
                 board[i][j] = 0
                 cnt += 1
-                queue.append(j)
-                queue.append(i)
+                queue.append((j, i))
             elif board[i][j] == 1:
                 is_fin = False
     time += 1

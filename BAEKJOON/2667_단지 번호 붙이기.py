@@ -13,16 +13,14 @@ for j in range(N):
         if board[j][i] == 1:
             cnt = 1
             board[j][i] = -1
-            queue = [i, j]
+            queue = [(i, j)]
             while queue:
-                x = queue.pop(0)
-                y = queue.pop(0)
+                x, y = queue.pop(0)
                 for k in range(4):
                     xk = x + dx[k]
                     yk = y + dy[k]
                     if 0 <= xk < N and 0 <= yk < N and board[yk][xk] == 1:
-                        queue.append(xk)
-                        queue.append(yk)
+                        queue.append((xk, yk))
                         board[yk][xk] = -1
                         cnt += 1
             result_list += [cnt]

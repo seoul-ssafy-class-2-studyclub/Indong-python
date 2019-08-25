@@ -1,19 +1,18 @@
 def bfs(y, x, rain):
     dx = [0, 1, 0, -1]
     dy = [1, 0, -1, 0]
-    queue = [x, y]
+    queue = [(x, y)]
     chk[y][x] = rain
     while queue:
-        x = queue.pop(0)
-        y = queue.pop(0)
+        x, y = queue.pop(0)
         for i in range(4):
             xi = x + dx[i]
             yi = y + dy[i]
             if 0 <= xi < N and 0 <= yi < N and chk[yi][xi] < rain and board[yi][xi] > rain:
-                queue.append(xi)
-                queue.append(yi)
+                queue.append((xi, yi))
                 chk[yi][xi] = rain
     return 1
+
 
 N = int(input())
 board = []

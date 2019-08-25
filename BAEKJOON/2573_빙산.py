@@ -1,13 +1,14 @@
+import sys
+
 def bfs(y, x):
     dx = [0, 1, 0, -1]
     dy = [1, 0, -1, 0]
 
-    queue = [x, y]
+    queue = [(x, y)]
     vis[y][x] = True
 
     while queue:
-        x = queue.pop(0)
-        y = queue.pop(0)
+        x, y = queue.pop(0)
         for i in range(4):
             xi = x + dx[i]
             yi = y + dy[i]
@@ -16,15 +17,14 @@ def bfs(y, x):
                     arctic[y][x] -= 1
                 elif arctic[yi][xi] >= 1:
                     vis[yi][xi] = True
-                    queue.append(xi)
-                    queue.append(yi)
+                    queue.append((xi, yi))
     return 1
 
 
-N, M = map(int, input().split())
+N, M = map(int, sys.stdin.readline().split())
 arctic = []
 for i in range(N):
-    arctic.append(list(map(int, input().split())))
+    arctic.append(list(map(int, sys.stdin.readline().split())))
 
 cnt = 0
 time = -1
