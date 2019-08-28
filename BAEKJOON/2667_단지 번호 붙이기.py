@@ -5,8 +5,7 @@ result_list = []
 N = int(input())
 board = []
 for i in range(N):
-    row = input()
-    board.append([int(j) for j in row])
+    board.append(list(map(int, input())))
 
 for j in range(N):
     for i in range(N):
