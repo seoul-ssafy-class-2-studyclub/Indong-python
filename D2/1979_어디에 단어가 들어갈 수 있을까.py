@@ -1,48 +1,34 @@
-def conut_subtotal(x, y):
+def puzzle(board, N, K):
+    cnt = 0
+    for i in range(N):
+        stack = []
+        length = 0
+        for j in range(N):
+            if board[i][j]:
+                stack.append(1)
+                length += 1
+            elif not board[i][j]:
+                if length == K:
+                    cnt += 1
+                stack.clear()
+                length = 0
+
+        if stack and length == K:
+            cnt += 1
+            stack.clear()
+            length = 0
+
+    return cnt
+
+
+for case in range(1, int(input()) + 1):
+    N, K = map(int, input().split())
+    board = []
+
+    for _ in range(N):
+        board.append(list(map(int, input().split())))
     result = 0
-    for number in range(len(x) - (y - 1)):
-        subtotal_number = sum(x[number:number+y])
-        if subtotal_number == y:
-            if number == 0:
-                if x[y] == 1:
-                    continue
-                else:
-                    result += 1
-            elif number == len(x) - y:
-                if x[number - 1] == 1:
-                    continue
-                else:
-                    result += 1
-            else:
-                if x[number - 1] or x[number + y] == 1:
-                    continue
-                else:
-                    result += 1
-    return result
+    result += puzzle(board, N, K) + puzzle(list(zip(*board)), N, K)
 
-
-case_size = int(input())
-list_result = []
-try:
-    for case in range(case_size):
-        puzzle_length, word_length = map(int, input().split()) 
-        result = 0
-        square_list = []
-        if (5 <= puzzle_length <= 15) and (2 <= word_length <= puzzle_length):
-            for i in range(puzzle_length):
-                horizonal_list = list(map(int, input().split()))
-                square_list += [horizonal_list]
-                result += conut_subtotal(horizonal_list, word_length)
-
-            for j in range(puzzle_length):
-                vertical_list = [l[j] for l in square_list]
-                result += conut_subtotal(vertical_list, word_length)
-            list_result += [result]
-        else:
-            raise ValueError
-
-    for key, value in enumerate(list_result):
-        print(f"#{key + 1} {value}")
-
-except ValueError:
-    print("범위 내의 숫자를 입력해주세요.")
+    print(f'#{case} {result}')
+    
