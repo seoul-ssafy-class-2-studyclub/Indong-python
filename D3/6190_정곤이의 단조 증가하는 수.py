@@ -21,11 +21,5 @@ for case in range(1, case_size + 1):
                 continue
             if monotonic(mul):
                 result = mul
-    # mul_list = [num_list[i] * num_list[j] for i in range(N - 1) for j in range(i + 1, N)]
-    # mul_list = sorted(mul_list, reverse=True)
-    # result = -1
-    # for num in mul_list:
-    #     if monotonic(num):
-    #         result = num
-    #         break
+
     print(f'#{case} {result}')

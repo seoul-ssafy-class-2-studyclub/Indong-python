@@ -1,23 +1,15 @@
-move = [[3, 2], [2, 3], [1, 0], [0, 1]]
-
-for case in range(1, int(input()) + 1):
-    N = int(input())
-    board = [list(map(int, input().split())) for _ in range(N)]
-    cnt = 0
-    x, y = 0, 0
-    di = 3
-    while True:
-        if di == 0:
-            y -= 1
-        elif di == 1:
-            y += 1
-        elif di == 2:
-            x -= 1
-        else:
-            x += 1
-        if 0 > x or x >= N or 0 > y or y >= N:
-            break
-        if board[y][x]:
-            di = move[di][board[y][x] - 1]
-        cnt += 1
-    print('#{0} {1}'.format(case, cnt))
+for t in range(int(input())):
+    N, M, K = map(int, input().split())
+    data = list(map(int, input().split()))
+    start = 0
+    first = data[0]
+    for k in range(K):
+        start = start + M
+        if start <= len(data) - 1:
+            data[start:0] = [data[start - 1] + data[start]]
+        elif start == len(data):
+            data[start:0] = [data[start - 1] + first]
+        elif start > len(data):
+            start = start - len(data)
+            data[start:0] = [data[start - 1] + data[start]]
+    print(data[::-1])

@@ -12,21 +12,8 @@ def dead_fly(mat, N, M):
     return max(total_list)
 
 
-case_size = int(input())
-try:
-    for case in range(case_size):
-        size, kf = map(int, input().split())
-        matrix = []
-        if (5 <= size <= 15) and (2 <= kf <= size):
-            for row in range(size):
-                horizontal_list = list(map(int, input().split()))
-                if list(filter(lambda x: x > 30, horizontal_list)) or len(horizontal_list) != size:
-                    raise ValueError
-                else:
-                    matrix += [horizontal_list]
-        else:
-            raise ValueError
-        result = dead_fly(matrix, size, kf)
-        print("#{0} {1}".format(case + 1, result))
-except ValueError:
-    print('올바른 범위의 수를 입력해주세요.')
+for case in range(1, int(input()) + 1):
+    N, M = map(int, input().split())
+    board = [list(map(int, input().split())) for _ in range(N)]
+    result = dead_fly(board, N, M)
+    print("#{0} {1}".format(case, result))
