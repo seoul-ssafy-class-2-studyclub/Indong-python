@@ -1,13 +1,12 @@
 from collections import deque
-from pprint import pprint
 
 delta = [(0, -1), (1, 0), (0, 1), (-1, 0)]
-def demolish(x, y, brick):
+def demolish(board, y, x, brick):
     q = deque()
-    q.append((x, y, brick))
+    q.append((y, x, brick))
     board[y][x] = 0
     while q:
-        x, y, size = q.popleft()
+        y, x, size = q.popleft()
         for i in range(size):
             for a, b in delta:
                 xi = x + (a * i)
@@ -16,33 +15,60 @@ def demolish(x, y, brick):
                     bomb = board[yi][xi]
                     if bomb:
                         if bomb > 1:
-                            q.append((xi, yi, bomb))
+                            q.append((yi, xi, bomb))
                         board[yi][xi] = 0
 
 
-def fall(w, h):
-    global board
-    new_board = [[[0] * w] for _ in range(h)]
+def fall(board, w, h):
+    cnt = 0
     for c in range(w):
         stack = deque()
         for r in range(h):
             brick = board[r][c]
             if brick:
                 stack.append(brick)
+                cnt += 1
         idx = h - 1
         while stack:
-            new_board[idx][c] = stack.pop()
+            board[idx][c] = stack.pop()
             idx -= 1
+        while idx >= 0:
+            board[idx][c] = 0
+            idx -= 1
+    return cnt
 
-    board, new_board = new_board, board
 
-first = (2, 1, 1)
-second = (2, 2, 3)
-W = 10
-H = 10
+def cycle(board, k=0, cnt=0):
+    global min_cnt
+    if k == N:
+        if min_cnt > cnt:
+            min_cnt = cnt
+        return True
+    
+    flag = True
+    for i in range(W):
+        is_clear = True
+        for j in range(H):
+            if board[j][i]:
+                is_clear = False
+                temp = [row[:] for row in board]
+                demolish(temp, j, i, temp[j][i])
+                break
+        if is_clear:
+            continue
+        flag = False
+        cnt = fall(temp, W, H)
+        cycle(temp, k+1, cnt)
+    
+    if flag:
+        min_cnt = 0
+        return True
 
-board = [list(map(int, input().split())) for _ in range(H)]
-demolish(2, 1, 1)
-demolish(2, 2, 3)
-fall(W, H)
-pprint(board)
+
+for case in range(1, int(input()) + 1):
+    N, W, H = map(int, input().split())
+    game = [list(map(int, input().split())) for _ in range(H)]
+    min_cnt = 999999
+    cycle(game)
+    print('#{0} {1}'.format(case, min_cnt))
+            
