@@ -1,57 +1,126 @@
 from pprint import pprint
 
-for t in range(int(input())):
-    N, M = map(int, input().split())
-    board = [[0] * N for _ in range(N)]
-    a = N // 2
-    board[a - 1][a - 1] = board[a][a] = 2
-    board[a][a - 1] = board[a - 1][a] = 1
-    # print(board)
+def block(ls):
+    global n, score
+    x, y, d = ls
+    if bd[x][y] == 1:
+        score += 1
+        if d < 2:
+            d += 2
+        elif d == 2:
+            d += 3
+        elif d == 3:
+            d += 1
+    elif bd[x][y] == 2:
+        score += 1
+        if d == 0 :
+            d += 1
+        elif 1 <= d < 3:
+            d += 2
+        elif d == 3:
+            d += 3
+    elif bd[x][y] == 3:
+        score += 1
+        if d == 0:
+            d += 3
+        elif d == 1:
+            d += 1
+        elif d > 1:
+            d += 2
+    elif bd[x][y] == 4:
+        score += 1
+        if d == 0 :
+            d += 2
+        elif d == 1:
+            d += 3
+        elif d == 2:
+            d += 1
+        elif d == 3:
+            d += 2
+    elif bd[x][y] == 5:
+        score += 1
+        d += 2
+    elif bd[x][y] == -1:
+        return [1]
+    elif bd[x][y] > 5:
+        for i in warm:
+            if bd[x][y] == i[0]:
+                if [x, y] != i[1]:
+                    x, y = i[1]
+                    break
+    elif [x, y] == start[:2]:
+        return [1]
 
-    near = [(-1, -1), (0, -1), (1, -1), (1, 0), (1, 1), (0, 1), (-1, 1), (-1, 0)]
+    nls = [x, y, d]
+    return move(nls)
 
-    for m in range(M):
-        x, y, color = map(int, input().split())
-        x -= 1
-        y -= 1
 
-        if color == 1:
-            another = 2
-        elif color == 2:
-            another = 1
+def wall(ls):
+    global n, score
+    x, y, d = ls
+    if x < 0:
+        d = 2
+    elif y < 0:
+        d = 1
+    elif x > n - 1:
+        d = 0
+    elif y > n - 1:
+        d = 3
+    nls = [x, y, d]
+    score += 1
+    nls = move(nls)
+    return nls
 
-        board[y][x] = color
-        for a, b in near:
-            xi = x + a
-            yi = y + b
-            if 0 <= xi < N and 0 <= yi < N:
-                print(xi, yi)
-                if board[yi][xi] == another:
-                    cnt = 0
-                    while board[yi][xi] == another:
-                        xi = xi + a
-                        yi = yi + b
-                        cnt += 1
-                        if xi < 0 or yi < 0 or xi >= N or yi >= N or board[yi][xi] == 0:
-                            cnt = 0
-                            break
-                    xi = x + a
-                    yi = y + b
+def move(ls):
+    global score, n
+    x, y, d = ls
+    d %= 4
+    dx, dy = dxy[d]
+    X = x+dx
+    Y = y+dy
+    while 0 <= X < n and 0 <= Y < n:
+        if [X, Y] == start[:2]:
+            return [1]
+        elif bd[X][Y] == 0:
+            X += dx
+            Y += dy
+        else :
+            break
+    nls = [X, Y, d%4]
+    return nls
 
-                    while cnt != 0:
-                        board[yi][xi] = color
-                        xi = xi + a
-                        yi = yi + b
-                        cnt -= 1
 
-        pprint(board)
-    black = 0
-    white = 0
-    for i in range(N):
-        for j in range(N):
-            if board[i][j] == 1:
-                black += 1
-            elif board[i][j] == 2:
-                white += 1
-
-    print('#{} {} {}'.format(t+1, black, white))
+for T in range(int(input())):
+    n = int(input())
+    warm = []
+    bd=[list(map(int, input().split())) for i in range(n)]
+    q = []
+    dxy = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+    for x in range(n):
+        for y in range(n):
+            for d in range(4):
+                if bd[x][y] == 0:
+                    q.append([x, y, d])
+    for x in range(n):
+        for y in range(n):
+            if bd[x][y] > 5:
+                warm.append([bd[x][y], [x, y]])
+    rs_set = []
+    while q:
+        score = 0
+        start = q.pop(0)
+        # start = [0, 2 ,3]
+        use_ls = move(start)
+        while True:
+            if len(use_ls) == 1:
+                break
+            elif 0 <= use_ls[0] < n and 0 <= use_ls[1] < n:
+                use_ls = block(use_ls)
+                if len(use_ls) == 1:
+                    break  # 웜홀, 블랙홀 해줘야함
+            else :
+                use_ls = wall(use_ls)
+        rs_set.append(score)
+        # print(score, start)
+    print('#{}'.format(T+1), max(rs_set))
+    
