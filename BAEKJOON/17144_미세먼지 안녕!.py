@@ -1,44 +1,64 @@
-from copy import deepcopy
+import sys
 
-def spread(y, x, dust):
-    dx = [0, 1, 0, -1]
-    dy = [-1, 0, 1, 0]
-    s_dust = dust // 5
-    for i in range(4):
-        xi = x + dx[i]
-        yi = y + dy[i]
-        if 0 <= xi < C and 0 <= yi < R and chk[yi][xi] != -1:
-            chk[yi][xi] += s_dust
-            dust -= s_dust
-            queue.append((xi, yi))
-    print(dust)
-    chk[y][x] += dust
+d = [(-1,0),(0,1),(1,0),(0,-1)]
+def spread():
+    chk = [[0] * C for _ in range(R)]
+
+    for y in range(R):
+        for x in range(C):
+            if board[y][x] >= 5:
+                dust = board[y][x]
+                s_dust = dust // 5
+                for a, b in d:
+                    xi = x + a
+                    yi = y + b
+                    if 0 <= xi < C and 0 <= yi < R and board[yi][xi] != -1:
+                        chk[yi][xi] += s_dust
+                        board[y][x] -= s_dust
+            
+    for i in range(R):
+        for j in range(C):
+            board[i][j] += chk[i][j]
 
 
-R, C, T = map(int, input().split())
-queue = []
-board = [list(map(int, input().split())) for d in range(R)]
-chk = [[0] * C for _ in range(R)]
-air_cleaner = []
-print(board)
+def air_cleaner():
+    for i in range(air1 - 1, 0, -1):
+        board[i][0] = board[i-1][0]
+    for i in range(air2 + 1, R - 1):
+        board[i][0] = board[i+1][0]
+
+    for i in range(0, C - 1):
+        board[0][i] = board[0][i+1]
+        board[R-1][i] = board[R-1][i+1]
+
+    for i in range(air1):
+        board[i][C-1] = board[i+1][C-1]
+    for i in range(R - 1, air2, -1):
+        board[i][C-1] = board[i-1][C-1]
+
+    for i in range(C - 1, 1, -1):
+        board[air1][i] = board[air1][i-1]
+        board[air2][i] = board[air2][i-1]
+
+    board[air1][1] = 0
+    board[air2][1] = 0
+    
+
+
+R, C, T = map(int, sys.stdin.readline().split())
+board = [list(map(int, sys.stdin.readline().split())) for d in range(R)]
+air1, air2 = 0, 0
 for i in range(R):
-    for j in range(C):
-        if board[i][j]:
-            if board[i][j] != -1:
-                queue.append((j, i))
-            else:
-                air_cleaner.append(i)
-                chk[i][j] = -1
+    if board[i][0] == -1:
+        air1 = i
+        air2 = i + 1
+        break
 
-for i in range(len(queue)):
-    x, y = queue.pop(0)
-    if board[y][x]:
-        dust = board[y][x]
-        board[y][x] = 0
-        spread(y, x, dust)
+for _ in range(T):
+    spread()
+    air_cleaner()
 
-for i in range(1, air_cleaner[0], -1):
-    chk[i][0] = chk[i-1][0]
-chk[0][:C-1] = chk[0][1:C]
-
-board, chk = chk, board
+result = 0
+for i in range(R):
+    result += sum(board[i])
+print(result + 2)
