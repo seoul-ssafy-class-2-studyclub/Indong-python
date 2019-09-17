@@ -56,6 +56,7 @@ board[b][a].append((y, x))
 fill_outline()
 for i in range(15):
     print(board[i])
+print('------------------------')
 
 for y, x in idx:
     cand = []
@@ -77,7 +78,35 @@ for y, x in idx:
         yi = y + dy
         xi = x + dx
         if 0 <= yi < 15 and 0 <= xi < 15 and board[yi][xi]:
-            if board[yi][xi] == 1:
+            if not board[yi][xi]:
+                yi += dy
+                xi += dx
+            elif board[yi][xi] == 1:
+                temp = [row[:] for row in board]
+                temp[yi][xi] = []
                 if cand[i] == 0 or cand[i] == 2:
-                    
+                    nxt = (1, 3)
+                else:
+                    nxt = (0, 2)
+                for j in nxt:
+                    djy, djx = dxy[j]
+                    yj = yi + djy
+                    xj = xi + djx
+                    while temp[yj][xj] == 1:
+                        yj += djy
+                        xj += djx
+                    temp[yi][xi].append((yj, xj))
+                    temp[yj][xj].append((yi, xi))
+                
+                print(y, x)
+                print((yi, xi))
+                print(temp[yi][xi])
+                r, c = temp[yi][xi][0]
+                temp[r][c].remove(temp[yi][xi][1])
+                r, c = temp[yi][xi][1]
+                temp[r][c].remove(temp[yi][xi][0])
+
+
+for i in range(15):
+    print(temp[i])                
 
