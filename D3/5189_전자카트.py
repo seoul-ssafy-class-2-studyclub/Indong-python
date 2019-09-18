@@ -1,4 +1,4 @@
-def work(vis, N, frm=0, cnt=0, k=0):
+def work(frm=0, cnt=0, k=0):
     global min_num
 
     if k == N - 1:
@@ -11,13 +11,13 @@ def work(vis, N, frm=0, cnt=0, k=0):
 
     for i in range(N):
         if not vis[i]:
-            visit = vis[:]
-            visit[i] = True
+            vis[i] = True
             nxt = cnt
             nxt += green[frm][i]
             if min_num and nxt >= min_num:
                 continue
-            work(visit, N, i, nxt, k + 1)
+            work(i, nxt, k + 1)
+            vis[i] = False
 
 for case in range(1, int(input()) + 1):
     N = int(input())
@@ -27,6 +27,6 @@ for case in range(1, int(input()) + 1):
     vis = [False] * N
     vis[0] = True
     min_num = 0
-    work(vis, N)
+    work()
     print('#{0} {1}'.format(case, min_num))
     
