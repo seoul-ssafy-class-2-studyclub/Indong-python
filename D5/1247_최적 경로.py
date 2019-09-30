@@ -1,34 +1,42 @@
-def working(vis, dis, frm, to, cnt=0):
-    global min_dis
-    global N
+from collections import deque
 
-    vis = vis[:]
-    vis[to] = True
-    cnt += 1
-    dis += abs(idx[frm][0] - idx[to][0]) + abs(idx[frm][1] - idx[to][1])
-    if min_dis <= dis:
-        return False
-    if cnt == N:
-        dis += abs(idx[to][0] - idx[1][0]) + abs(idx[to][1] - idx[1][1])
-        if min_dis > dis:
-            min_dis = dis
-            return True
-        else:
-            return False
-    for i in range(2, N + 2):
-        if not vis[i]:
-            working(vis, dis, to, i, cnt)
+def calc_dis(y1, x1, y2, x2):
+    return abs(y1 - y2) + abs(x1 - x2)
 
 
 for case in range(1, int(input()) + 1):
     N = int(input())
     idx = list(map(int, input().split()))
-    vis = [False] * (N + 2)
-    for i in range(N + 2):
-        idx.append([idx.pop(0), idx.pop(0)])
+    M = 1 << (N + 2)
+    dp = [[0] * M for _ in range(N + 2)]
+    dis = [[calc_dis(idx[x*2], idx[x*2+1], idx[y*2], idx[y*2+1]) for x in range(N + 2)] for y in range(N + 2)]
     
-    min_dis = 99999999
+    queue = deque()
     for i in range(2, N + 2):
-        working(vis, 0, 0, i)
+        nxt = 1 | (1 << i)
+        dp[i][nxt] = dis[0][i]
+        queue.append((i, nxt))
 
-    print('#{0} {1}'.format(case, min_dis))
+    for _ in range(N):
+        for i in range(len(queue)):
+            frm, cur = queue.popleft()
+            if _ == N - 1:
+                nxt = M - 1
+                if not dp[1][nxt]:
+                    dp[1][nxt] = dp[frm][cur] + dis[frm][1]
+                else:
+                    dp[1][nxt] = min(dp[1][nxt], dp[frm][cur] + dis[frm][1])
+                continue
+
+            for to in range(2, N + 2):
+                if cur & (1 << to):
+                    continue
+                nxt = cur | (1 << to)
+                val = dp[frm][cur] + dis[frm][to]
+                if not dp[to][nxt]:
+                    queue.append((to, nxt))
+                    dp[to][nxt] = val
+                elif dp[to][nxt] > val:
+                    dp[to][nxt] = val
+                    
+    print(f'#{case} {dp[1][M-1]}')
