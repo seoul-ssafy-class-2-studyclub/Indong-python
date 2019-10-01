@@ -15,25 +15,31 @@ def mk_factor(num):
         dp[num] = dig
         return dp[num]
     
-    res = 987654321
     square_root = int(num ** 0.5)
     factors = [i for i in range(2, square_root + 1) if not num % i]
+    prime = []
     for fac in factors:
-        val1 = mk_factor(fac)
-        val2 = mk_factor(num // fac)
-        if val1 and val2:
-            res = min(res, val1 + val2 + 1)
+        val1 = chk_digit(fac)
+        val2 = chk_digit(num // fac)
+        if val1:
+            dp[fac] = val1
+            prime.append(fac)
+        if val2:
+            dp[num//fac] = val2
+            prime.append(num//fac)
+    prime.sort(reverse=True)
+    print(prime)
+    res = -1
+    for p in prime:
+        while not num % p:
+            num //= p
+            print(num, p, dp[p])
+            res += dp[p] + 1
+    print(num)
+    print(res)
 
-    if res != 987654321:
-        dp[num] = res
-        return res
 
 
-primes_chk = [True] * (10 ** 6 + 1)
-for i in range(2, 10 ** 3 + 1):
-    if primes_chk[i]:
-        for j in range(i + i, 10 ** 6 + 1, i):
-            primes_chk[j] = False
 
 result_list = []
 T = int(input())
