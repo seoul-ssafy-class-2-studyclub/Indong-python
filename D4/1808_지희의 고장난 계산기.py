@@ -12,9 +12,8 @@ def chk_digit(num):
 def mk_factor(num):
     dig = chk_digit(num)
     if dig:
-        dp[num] = dig
-        return dp[num]
-    
+        return dig + 1
+ 
     square_root = int(num ** 0.5)
     factors = [i for i in range(2, square_root + 1) if not num % i]
     prime = []
@@ -28,17 +27,23 @@ def mk_factor(num):
             dp[num//fac] = val2
             prime.append(num//fac)
     prime.sort(reverse=True)
-    print(prime)
+
     res = -1
-    for p in prime:
-        while not num % p:
-            num //= p
-            print(num, p, dp[p])
-            res += dp[p] + 1
-    print(num)
-    print(res)
+    l = len(prime)
+    for i in range(l):
+        new = num
+        temp = 0
+        for j in range(i, l):
+            p = prime[j]
+            while not new % p:
+                new //= p
+                temp += dp[p] + 1
+        if new > 1:
+            continue
+        if res == -1 or res > temp:
+            res = temp
 
-
+    return res
 
 
 result_list = []
@@ -48,10 +53,6 @@ for case in range(T):
     number = int(input())
     dp = [False] * (number + 1)
     res = mk_factor(number)
-    if res == None:
-        res = -1
-    else:
-        res += 1
     result_list.append(res)
 
 for case in range(T):
