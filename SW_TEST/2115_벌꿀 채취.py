@@ -1,42 +1,32 @@
-# N, M, C = map(int, input().split())
-# L = N - M + 1
-# board = [list(map(int, input().split())) for _ in range(N)]
-# honey = [[0] * L for _ in range(N)]
-# profit = [[0] * L for _ in range(N)]
+def subset_sum(n, idx):
+    for i in range(M):
+        if not n & (1 << i):
+            nxt = n | (1 << i)
+            if not subset[nxt]:
+                subset[nxt] = [subset[n][0] + collect[i], subset[n][1] + collect[i] ** 2]
+                if subset[nxt][0] <= C:
+                    if profit[idx] < subset[nxt][1]:
+                        profit[idx] = subset[nxt][1]
+                    subset_sum(nxt, idx)
+                    
 
-# for r in range(N):
-#     honey[r][0] = sum(board[r][:M])
-#     profit[r][0] = sum([i ** 2 for i in board[r][:M]])
-#     for c in range(1, L):
-#         honey[r][c] = honey[r][c-1] - board[r][c-1] + board[r][c+M-1]
-#         profit[r][c] = profit[r][c-1] - board[r][c-1] ** 2 + board[r][c+M-1] ** 2
+for case in range(1, int(input()) + 1):
+    N, M, C = map(int, input().split())
+    L = N - M + 1
+    honey = [list(map(int, input().split())) for _ in range(N)]
+    length = N ** 2
+    profit = [0] * length
+    for r in range(N):
+        for c in range(L):
+            subset = [[0, 0]] + [0] * (1 << M)
+            collect = honey[r][c:c+M]
+            subset_sum(0, r*N+c)
 
-# dp = [[[0, 0] for j in range(L)] for i in range(N)]
-# res = 0
-# for r in range(N):
-#     for c in range(L):
-#         if c - M < 0:
-#             bef = dp[r-1][-1][0]
-#         else:
-#             bef = dp[r][c-M][0]
-# 이때 생각해서 다시 짜야 함!
-        if honey[r][c] <= C:
-#             cur = max(profit[r][c], bef)
-#             temp = bef + profit[r][c]
-#         else:
-#             cur = bef
-#             temp = 0
-#         dp[r][c] = [cur, temp]
-#         if res < temp:
-#             res = temp
+    res = 0
+    for i in range(length - M):
+        for j in range(i + M, length):
+            temp = profit[i] + profit[j]
+            if res < temp:
+                res = temp
 
-# print(res)
-
-
-# print(board)
-# print('honey')
-# print(honey)
-# print('profit')
-# print(profit)
-# print('====================')
-# print(dp)
+    print(f'#{case} {res}')
