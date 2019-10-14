@@ -1,4 +1,5 @@
 import sys
+from pprint import pprint
 
 def calc(idx_s, w, speed, di):
     while True:
