@@ -1,26 +1,85 @@
-T = int(input())
-for tc in range(1, T+1):
-   N, M = map(int, input().split())
-   # 서로 친하다 == 무방향이다
-   # 1번이 상원이 그러면 1번이 가진 자식들을 타고 자식과 자식을 타고 가야한다.
-   # 1번에 들어갈 자식이 없다면 아무도 없다는 뜻이다.
-   adj_list = [[] for _ in range(N+1)]
-   for _ in range(1, M+1):
-       a, b = map(int, input().split())
-       adj_list[a].append(b)
-       adj_list[b].append(a)
-   result = 0
-   visit = [False]*(M+1)
-   q = []
-   q.append((1, 0))
-   visit[1] = True
-   while q:
-       start, cnt = q.pop(0)
-       for child in adj_list[start]:
-           # print(child)
-           if visit[child] == False and cnt <= 1:
-               visit[child] = True
-               result += 1
-               q.append((child, cnt+1))
-   print(f'#{tc}', result)
-   
+import sys
+from collections import deque
+sys.setrecursionlimit(10**7)
+
+def dfs(y, x, cur):
+    vis[y][x] = num
+    for dy, dx in dxy:
+        yi = y + dy
+        xi = x + dx
+        if 0 <= yi < N and 0 <= xi < M:
+            nxt = vis[yi][xi]
+            if pacific[yi][xi] == cur and not nxt:
+                dfs(yi, xi, cur)
+            elif pacific[yi][xi] != cur and nxt:
+                if con[nxt] == num:
+                    continue
+                adj[num].append(nxt)
+                adj[nxt].append(num)
+                con[num] = num
+                con[nxt] = num
+
+
+def init():
+    for i in range(num):
+        con[i] = 0
+    for r in range(N):
+        for c in range(M):
+            if pacific[r][c] == '#':
+                is_sum[vis[r][c]] = 1
+
+
+def go(now):
+    global order
+    ret = num - 1
+    discovered[now] = order
+    order += 1
+    stack.append(now)
+    for nxt in adj[now]:
+        if not discovered[nxt]:
+            go(nxt)
+            if is_sum[now] and discovered[nxt] == discovered[now]:
+                while stack and stack[-1] != now:
+                    con[stack.pop()] = 1
+            stack.append(now)
+        ret = min(ret, discovered[nxt])
+    discovered[now] = ret
+    return
+
+
+input = sys.stdin.readline
+dxy = [(-1, 0), (0, 1), (1, 0), (0, -1)]
+N, M = map(int, input().split())
+pacific = [list(input().strip()) for _ in range(N)]
+vis = [[False] * M for _ in range(N)]
+adj = [[]]
+con = [0] * 4000001
+num = 1
+for r in range(N):
+    for c in range(M):
+        if not vis[r][c]:
+            adj.append([])
+            dfs(r, c, pacific[r][c])
+            num += 1
+
+is_sum = [0] * num
+discovered = [False] * num
+stack = deque()
+order = 1
+
+init()
+go(1)
+
+for r in range(N):
+    for c in range(M):
+        if pacific[r][c] == '.':
+            continue
+        num = vis[r][c]
+        if con[num] and discovered[num] != 1:
+            pacific[r][c] = 'X'
+        else:
+            pacific[r][c] = 'O'
+
+
+for r in range(N):
+    print(''.join(pacific[r]))
