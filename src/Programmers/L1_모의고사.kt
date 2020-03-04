@@ -6,7 +6,7 @@ val p1 = arrayOf(1, 2, 3, 4, 5)
 val p2 = arrayOf(2, 1, 2, 3, 2, 4, 2, 5)
 val p3 = arrayOf(3, 3, 1, 1, 2, 2, 4, 4, 5, 5)
 
-fun solution(answers: IntArray): IntArray {
+private fun solution(answers: IntArray): IntArray {
     var scores = IntArray(3) { 0 }
     for (i in answers.indices) {
         if (answers[i] == p1[i%5]) scores[0]++

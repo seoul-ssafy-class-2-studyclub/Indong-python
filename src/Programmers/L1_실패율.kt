@@ -2,7 +2,7 @@ package Programmers
 
 import java.util.*
 
-fun solution(N: Int, stages: IntArray): IntArray {
+private fun solution(N: Int, stages: IntArray): IntArray {
     var u = stages.size.toDouble()
     var failedUsers = Array(N+2) { 0 }
     stages.forEach { ++failedUsers[it] }

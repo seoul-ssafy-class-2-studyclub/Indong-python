@@ -2,7 +2,7 @@ package Programmers
 
 import java.util.*
 
-fun solution(array: IntArray, commands: Array<IntArray>): IntArray {
+private fun solution(array: IntArray, commands: Array<IntArray>): IntArray {
     return commands.map { it -> array.sliceArray(it[0]-1..it[1]-1).sorted()[it[2]-1] }.toIntArray()
 }
 

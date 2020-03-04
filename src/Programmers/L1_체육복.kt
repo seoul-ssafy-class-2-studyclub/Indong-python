@@ -1,6 +1,6 @@
 package Programmers
 
-fun solution(n: Int, lost: IntArray, reserve: IntArray): Int {
+private fun solution(n: Int, lost: IntArray, reserve: IntArray): Int {
     var answer = 0
     var clothes = Array<Int>(n) { 1 }
     for (l in lost) --clothes[l-1]
