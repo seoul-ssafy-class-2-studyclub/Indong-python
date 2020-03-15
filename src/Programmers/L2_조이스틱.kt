@@ -1,6 +1,6 @@
 package Programmers
 
-fun solution(name: String): Int {
+private fun solution(name: String): Int {
     val N = name.length
     var answer = 0
     val m = Array(N) { diff(name[it]) }
